@@ -65,3 +65,15 @@ li button:hover {
   margin: 0 auto;
   margin-top: 40px;
 }
+.game-question {
+  font-size: 2em;
+}
+.game-body {
+  width: 70%;
+  margin: 0 auto;
+  background: #f9fbfd;
+  margin-top: 40px;
+  padding: 10px;
+  border-width: 2px;
+  border-style: solid;
+}

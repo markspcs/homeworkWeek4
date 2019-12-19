@@ -2,10 +2,40 @@ var todoInput = document.querySelector("#todo-text");
 var todoForm = document.querySelector("#todo-form");
 var todoList = document.querySelector("#todo-list");
 var todoCountSpan = document.querySelector("#todo-count");
+var gameBody = document.querySelector("#game-body");
+var gameHeader = document.querySelector("#game-header");
+
+
+questions();
+
+function questions(){
+  var listOfQuestions = "this is the question";
+  gameHeader.textContent = listOfQuestions;
+  gameHeader.setAttribute("class", 'card game-question');
+
+}
 
 var todos = ["Learn HTML", "Learn CSS", "Learn JavaScript"];
 
+
 renderTodos();
+
+
+
+var questions = [
+  {
+    title: "Commonly used data types DO NOT include:",
+    choices: ["strings", "booleans", "alerts", "numbers"],
+    answer: "alerts"
+  },
+  {
+    title: "The condition in an if / else statement is enclosed within ____.",
+    choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
+    answer: "parentheses"
+  },
+  ///etc.
+];
+
 
 function renderTodos(event) {
   //todos.push(event.textContent);
