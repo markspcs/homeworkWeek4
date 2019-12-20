@@ -4,24 +4,8 @@ var todoList = document.querySelector("#todo-list");
 var todoCountSpan = document.querySelector("#todo-count");
 var gameBody = document.querySelector("#game-body");
 var gameHeader = document.querySelector("#game-header");
-
-
-questions();
-
-function questions(){
-  var listOfQuestions = "this is the question";
-  gameHeader.textContent = listOfQuestions;
-  gameHeader.setAttribute("class", 'card game-question');
-
-}
-
-var todos = ["Learn HTML", "Learn CSS", "Learn JavaScript"];
-
-
-renderTodos();
-
-
-
+//var countdownTimer = document.querySelector("#countDownTimer");
+var timer = 10;
 var questions = [
   {
     title: "Commonly used data types DO NOT include:",
@@ -36,6 +20,50 @@ var questions = [
   ///etc.
 ];
 
+countdown();
+
+for (let i = 0; i < questions.length; i++) {
+  askQuestions(questions[i]);
+}
+timer = timer - 5;
+
+function askQuestions(questionObj) {
+  var lisuestions = "this is the question";
+  console.log(questionObj.title);
+  gameHeader.textContent = questionObj.title;
+  gameHeader.setAttribute("class", 'card game-question');
+
+}
+function countdown() {
+  
+  var x = setInterval(function() {
+
+    // Get today's date and time
+    timer--;
+    var timeRemaining = timer - 1;
+  
+
+  
+    // Display the result in the element with id="demo"
+    document.getElementById("countDownTimer").innerHTML = timer + "s ";
+  
+    // If the count down is finished, write some text
+    if (timer < 1) {
+      clearInterval(x);
+      document.getElementById("countDownTimer").innerHTML = "EXPIRED";
+    }
+  }, 1000);
+}
+
+var todos = ["Learn HTML", "Learn CSS", "Learn JavaScript"];
+
+
+renderTodos();
+
+
+
+
+
 
 function renderTodos(event) {
   //todos.push(event.textContent);
@@ -44,7 +72,7 @@ function renderTodos(event) {
   todoCountSpan.textContent = todos.length;
 
   // Render a new li for each todo
-  todos.forEach(function(todo, idx, todos){
+  todos.forEach(function (todo, idx, todos) {
     const li = document.createElement("li");
     li.textContent = todo;
 
@@ -56,23 +84,23 @@ function renderTodos(event) {
     button.textContent = "complete";
     li.appendChild(button);
 
-    
+
   }
   );
   //localStorage.setItem("store", todos);
 }
 function init() {
   var storeditems = JSON.parse(localStorage.getItem("todos"));
-  if(storeditems.length && storedTodos){
-    todos = storeditems;
-  }
+  // if(storeditems.length && storedTodos){
+  //   todos = storeditems;
+  // }
 }
 
-todoForm.addEventListener("submit", function(event) {
+todoForm.addEventListener("submit", function (event) {
   event.preventDefault();
   var todo = todoInput.value.trim();
   console.log(todo);
-  if(todo === ""){
+  if (todo === "") {
     return false;
   }
   todos.push(todo);
@@ -80,9 +108,9 @@ todoForm.addEventListener("submit", function(event) {
   renderTodos();
 }
 );
-todoList.addEventListener("click", function(event){
+todoList.addEventListener("click", function (event) {
   var el = event.target;
-  if(el.matches("button")) {
+  if (el.matches("button")) {
     var idx = el.parentElement.getAttribute("data-index");
     todos.splice(idx, 1);
     localStorage.setItem("todos", JSON.stringify("todos"));
