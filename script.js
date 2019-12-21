@@ -33,6 +33,20 @@ function askQuestions(questionObj) {
   gameHeader.textContent = questionObj.title;
   gameHeader.setAttribute("class", 'card game-question');
 
+  //todos.forEach(function (todo, idx, todos) {
+    //const li = document.createElement("li");
+  for
+    const button = document.createElement("button");
+
+    button.textContent = "ask the question";
+
+    gameHeader.appendChild(button);
+
+    //li.appendChild(button);
+
+
+  //}
+
 }
 function countdown() {
   
