@@ -22,45 +22,117 @@ var questions = [
 
 countdown();
 
-for (let i = 0; i < questions.length; i++) {
-  askQuestions(questions[i]);
-}
-timer = timer - 5;
 
+//for (let i = 0; i < questions.length; i++) {
+  //setInterval(askQuestions(questions[i]),10000);
+  //askQ(questions[i]);
+//}
+askQ()
+timer = timer - 5;
+///////////////
+function askQ() {
+  var i = 0;
+ // for (let i = 0; i < questions.length; i++) {
+  var timer1 = setInterval(function () {
+    var lisuestions = "this is the question";
+  
+      console.log(i);
+      questionObj = questions[i];
+      console.log(questionObj.title);
+      gameHeader.textContent = questionObj.title;
+      gameHeader.setAttribute("class", 'card game-question');
+
+      //todos.forEach(function (todo, idx, todos) {
+      //const li = document.createElement("li");
+      for (let i = 0; i < questionObj.choices.length; i++) {
+        const button = document.createElement("button");
+        button.setAttribute('value', questionObj.choices[i]);
+
+        button.textContent = questionObj.choices[i];
+
+        gameHeader.appendChild(button);
+        document.addEventListener("click", function (event) {
+          event.preventDefault();
+          //let pressedButton = 
+          console.log(event.toElement.value);
+          let press = event.toElement.value;
+          console.log(questionObj.answer);
+          if (press.match(questionObj.answer)) {
+            console.log("is correct");
+            score = 1;
+          } else {
+            console.log("incorrect");
+            score = 0;
+          }
+
+        });
+
+        //li.appendChild(button);
+
+      }
+      if (timer < 3) {
+        clearInterval(timer1);
+      }
+  console.log("timer" + timer); 
+  i++;
+  }, 2000);
+  }
+//}
+//////////////////////////////
+function answerResult() {
+  console.log("here");
+}
+
+///////////////////////////////////////////////////////////////////////////
 function askQuestions(questionObj) {
   var lisuestions = "this is the question";
+  let score;
   console.log(questionObj.title);
   gameHeader.textContent = questionObj.title;
   gameHeader.setAttribute("class", 'card game-question');
 
   //todos.forEach(function (todo, idx, todos) {
-    //const li = document.createElement("li");
-  for
+  //const li = document.createElement("li");
+  for (let i = 0; i < questionObj.choices.length; i++) {
     const button = document.createElement("button");
+    button.setAttribute('value', questionObj.choices[i]);
 
-    button.textContent = "ask the question";
+    button.textContent = questionObj.choices[i];
 
     gameHeader.appendChild(button);
+    document.addEventListener("click", function (event) {
+      event.preventDefault();
+      //let pressedButton = 
+      console.log(event.toElement.value);
+      let press = event.toElement.value;
+      console.log(questionObj.answer);
+      if (press.match(questionObj.answer)) {
+        console.log("is correct");
+        score = 1;
+      } else {
+        console.log("incorrect");
+        score = 0;
+      }
+
+    });
 
     //li.appendChild(button);
 
-
-  //}
-
+  }
 }
 function countdown() {
-  
-  var x = setInterval(function() {
+
+  var x = setInterval(function () {
 
     // Get today's date and time
     timer--;
     var timeRemaining = timer - 1;
-  
 
-  
+
+
     // Display the result in the element with id="demo"
     document.getElementById("countDownTimer").innerHTML = timer + "s ";
-  
+
     // If the count down is finished, write some text
     if (timer < 1) {
       clearInterval(x);
