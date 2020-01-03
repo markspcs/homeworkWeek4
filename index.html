@@ -5,23 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="./style.css" />
-    <title>Todo List</title>
+    <title>quiz game</title>
   </head>
   <body>
-    <div class="todos">
+    <!-- <div class="todos">
       <form id="todo-form" method="POST">
         <label for="todo-text">Add a Todo:</label>
         <input type="text" placeholder="What needs to be done?" name="todo-text" id="todo-text" />
       </form>
       <p>Todo Count: <span id="todo-count">0</span></p>
       <ul id="todo-list"></ul>
+    </div> -->
+    <div class="leftContent">
+
     </div>
-    <div class="game-body">
+    <div class="rightContent">
       <p><span id="countDownTimer">0</span></p>
+    </div>
+    <hr class="hrLine">
+    <div class="game-body">
+      
       <form id="game-form">
         <p><span id="game-header">0</span></p>
       </form>
-
+      <span id="result"></span>
     </div>
     <script src="./script.js"></script>
   </body>

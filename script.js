@@ -4,6 +4,7 @@ var todoList = document.querySelector("#todo-list");
 var todoCountSpan = document.querySelector("#todo-count");
 var gameBody = document.querySelector("#game-body");
 var gameHeader = document.querySelector("#game-header");
+var result = document.querySelector("#result");
 //var countdownTimer = document.querySelector("#countDownTimer");
 var timer = 30;
 var score = 0;
@@ -58,7 +59,7 @@ function startPage() {
       // //score = 0;
       // timer = timer - 5;
     }
-    
+
     // ask(questionNum + 1);
   });
 }
@@ -108,12 +109,16 @@ function ask(questionNum) {
 
     //Loops through the choices
     for (let i = 0; i < questionObj.choices.length; i++) {
+      const li = document.createElement("li");
+
+      gameHeader.appendChild(li);
+
       const button = document.createElement("button");
       button.setAttribute('value', questionObj.choices[i]);
 
       button.textContent = questionObj.choices[i];
 
-      gameHeader.appendChild(button);
+      li.appendChild(button);
     }
     document.addEventListener("click", function _listener(event) {
       event.preventDefault();
@@ -124,10 +129,11 @@ function ask(questionNum) {
 
       if (press.match(questionObj.answer)) {
         console.log("is correct");
+        rightWrong("correct");
         score = score + 1;
       } else {
         console.log("incorrect");
-        //score = 0;
+        rightWrong("wrong")
         timer = timer - 5;
       }
       document.removeEventListener("click", _listener);
@@ -141,9 +147,23 @@ function ask(questionNum) {
     endPage();
 
   }
-  //li.appendChild(button);
+}
+/////////////////////////
+function rightWrong(ans) {
+  var removeResult = document.getElementById('answer');
+  if (removeResult) {
+    removeResult.remove();
+  }
+  var div;
+    div = document.createElement("div")
+    result.appendChild(div);
+    div.innerHTML = '<hr> <p id="answer" >' + ans + '</p>';
+    //result.textContent = ans;
 
-
+  setTimeout(function () {
+      div.remove();
+  }, 1000);
+  
 
 }
 ///////////////
@@ -273,25 +293,25 @@ renderTodos();
 function renderTodos(event) {
   //todos.push(event.textContent);
   // Clear todoList element and update todoCountSpan
-  todoList.innerHTML = "";
-  todoCountSpan.textContent = todos.length;
+  // todoList.innerHTML = "";
+  // todoCountSpan.textContent = todos.length;
 
   // Render a new li for each todo
-  todos.forEach(function (todo, idx, todos) {
-    const li = document.createElement("li");
-    li.textContent = todo;
+  // todos.forEach(function (todo, idx, todos) {
+  //   const li = document.createElement("li");
+  //   li.textContent = todo;
 
-    todoList.appendChild(li);
-    li.setAttribute("data-index", idx);
-    li.setAttribute("date-value", todo);
+  //   todoList.appendChild(li);
+  //   li.setAttribute("data-index", idx);
+  //   li.setAttribute("date-value", todo);
 
-    const button = document.createElement("button");
-    button.textContent = "complete";
-    li.appendChild(button);
+  //   const button = document.createElement("button");
+  //   button.textContent = "complete";
+  //   li.appendChild(button);
 
 
-  }
-  );
+  // }
+  // );
   //localStorage.setItem("store", todos);
 }
 function init() {
