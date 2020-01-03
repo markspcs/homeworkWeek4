@@ -20,7 +20,7 @@ var questions = [
   },
   ///etc.
 ];
-
+var topScores = [0, 0, 0, 0, 0]
 countdown();
 questionNum = 0;
 
@@ -29,52 +29,118 @@ questionNum = 0;
 //askQ(questions[i]);
 //}
 //askQ()
+startPage();
 
-ask(questionNum);
-//////////////////////////////
-function ask(questionNum) {
-  if (questionNum < questions.length) {
-  console.log("this is the question " + questionNum + " " + questions.length);
-
-  questionObj = questions[questionNum];
-  console.log(questionObj.title);
-  gameHeader.textContent = questionObj.title;
+//ask(questionNum);
+/////////////////////////
+function startPage() {
+  console.log("this is start");
+  gameHeader.textContent = "start game";
   gameHeader.setAttribute("class", 'card game-question');
+  const button = document.createElement("button");
+  button.setAttribute('value', "start");
 
-  //Loops through the choices
-  for (let i = 0; i < questionObj.choices.length; i++) {
-    const button = document.createElement("button");
-    button.setAttribute('value', questionObj.choices[i]);
+  button.textContent = "start game";
 
-    button.textContent = questionObj.choices[i];
+  gameHeader.appendChild(button);
 
-    gameHeader.appendChild(button);
-  }
   document.addEventListener("click", function _listener(event) {
     event.preventDefault();
     //let pressedButton = 
     console.log("event value " + event.toElement.value);
     let press = event.toElement.value;
-    console.log("answer " + questionObj.answer);
-
-    if (press.match(questionObj.answer)) {
-      console.log("is correct");
-      score = score + 1 ;
+    if (press.match("start")) {
+      console.log("start game");
+      document.removeEventListener("click", _listener);
+      ask(0);
     } else {
-      console.log("incorrect");
-      //score = 0;
-      timer = timer - 5;
+      // console.log("incorrect");
+      // //score = 0;
+      // timer = timer - 5;
     }
-    document.removeEventListener("click", _listener);
-    ask(questionNum + 1);
+    
+    // ask(questionNum + 1);
   });
-
-} 
-else {
-  console.log("finished");
-  gameHeader.textContent = "finished score " + score;
-
 }
+//////////////////////////////
+function endPage() {
+  console.log("this is the end");
+  gameHeader.textContent = "end of game. The score is " + score;
+  setScores(score);
+}
+////////////////////////////
+function setScores(score) {
+  var storedScores = JSON.parse(localStorage.getItem("topScores"));
+  if (storedScores == null) { // initializes if never played and keeps to 5 scores
+    storedScores = [0, 0, 0, 0, 0]
+  }
+  console.log("score " + storedScores.length);
+  for (let i = 0; i < 5; i++) {
+    // if (i === 4) {
+    //   storedScores[i] =score;
+    //   console.log("default score");
+    // }
+    // else 
+    if (score > storedScores[i]) {
+      storedScores.push(score);
+      break;
+      //storedScores[i] = score;
+    }
+    else {
+      storedScores.push(score);
+      console.log("High Score " + i);
+      break;
+    }
+  }
+  let sortScores = storedScores.sort(function (a, b) { return a - b });
+  sortScores.shift();
+  localStorage.setItem("topScores", JSON.stringify(sortScores));
+}
+//////////////////////////////
+function ask(questionNum) {
+  if (questionNum < questions.length) {
+    console.log("this is the question " + questionNum + " " + questions.length);
+
+    questionObj = questions[questionNum];
+    console.log(questionObj.title);
+    gameHeader.textContent = questionObj.title;
+    gameHeader.setAttribute("class", 'card game-question');
+
+    //Loops through the choices
+    for (let i = 0; i < questionObj.choices.length; i++) {
+      const button = document.createElement("button");
+      button.setAttribute('value', questionObj.choices[i]);
+
+      button.textContent = questionObj.choices[i];
+
+      gameHeader.appendChild(button);
+    }
+    document.addEventListener("click", function _listener(event) {
+      event.preventDefault();
+      //let pressedButton = 
+      console.log("event value " + event.toElement.value);
+      let press = event.toElement.value;
+      console.log("answer " + questionObj.answer);
+
+      if (press.match(questionObj.answer)) {
+        console.log("is correct");
+        score = score + 1;
+      } else {
+        console.log("incorrect");
+        //score = 0;
+        timer = timer - 5;
+      }
+      document.removeEventListener("click", _listener);
+      ask(questionNum + 1);
+    });
+
+  }
+  else {
+    console.log("finished");
+    gameHeader.textContent = "finished score " + score;
+    endPage();
+
+  }
   //li.appendChild(button);
 
 
@@ -189,6 +255,7 @@ function countdown() {
     if (timer < 1) {
       clearInterval(x);
       document.getElementById("countDownTimer").innerHTML = "EXPIRED";
+      endPage();
     }
   }, 1000);
 }
@@ -251,7 +318,7 @@ todoList.addEventListener("click", function (event) {
   if (el.matches("button")) {
     var idx = el.parentElement.getAttribute("data-index");
     todos.splice(idx, 1);
-    localStorage.setItem("todos", JSON.stringify("todos"));
+    localStorage.setItem("todos", JSON.stringify(["todas", "tadas"]));
     renderTodos();
   }
 });
