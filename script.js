@@ -7,6 +7,7 @@ var gameHeader = document.querySelector("#game-header");
 var result = document.querySelector("#result");
 //var countdownTimer = document.querySelector("#countDownTimer");
 var timer = 30;
+var clockTime;
 var score = 0;
 var questions = [
   {
@@ -19,20 +20,19 @@ var questions = [
     choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
     answer: "parentheses"
   },
+  {
+    title: "The question ____.",
+    choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
+    answer: "parentheses"
+  },
   ///etc.
 ];
 var topScores = [0, 0, 0, 0, 0]
-countdown();
+
 questionNum = 0;
 
-//for (let i = 0; i < questions.length; i++) {
-//setInterval(askQuestions(questions[i]),10000);
-//askQ(questions[i]);
-//}
-//askQ()
 startPage();
 
-//ask(questionNum);
 /////////////////////////
 function startPage() {
   console.log("this is start");
@@ -53,6 +53,7 @@ function startPage() {
     if (press.match("start")) {
       console.log("start game");
       document.removeEventListener("click", _listener);
+      countdown();
       ask(0);
     } else {
       // console.log("incorrect");
@@ -66,16 +67,40 @@ function startPage() {
 //////////////////////////////
 function endPage() {
   console.log("this is the end");
-  gameHeader.textContent = "end of game. The score is " + score;
-  setScores(score);
+  clearInterval(clockTime);
+  document.getElementById("countDownTimer").innerHTML = timer;
+  gameHeader.innerHTML = '<h2>All done!</h2> Your final score is ' + timer;
+
+  const scoreForm = document.createElement("FORM");
+  gameHeader.appendChild(scoreForm);
+  const nameLabel = document.createElement('label');
+  nameLabel.innerHTML = "Enter Initials : ";
+  scoreForm.appendChild(nameLabel);
+  const scoreText = document.createElement('input');
+  scoreText.type = 'text';
+  scoreText.id = 'newScore';
+  //scoreText.value = timer;
+  scoreForm.appendChild(scoreText);
+  const scoreButton = document.createElement("button");
+  //scoreButton.setAttribute('value', timer);
+  scoreButton.textContent = "submit";
+  scoreForm.appendChild(scoreButton);
+  //scoreForm.submit();
+  scoreButton.addEventListener('click', function (x) {
+    x.preventDefault();
+  setScores(x)
+  });
+  // setScores(timer);
 }
 ////////////////////////////
-function setScores(score) {
+function setScores(event) {
   var storedScores = JSON.parse(localStorage.getItem("topScores"));
   if (storedScores == null) { // initializes if never played and keeps to 5 scores
     storedScores = [0, 0, 0, 0, 0]
   }
-  console.log("score " + storedScores.length);
+  var userInitials = document.getElementById("newScore").value;
+  console.log("score " + timer);
+  console.log("event "   + userInitials);
   for (let i = 0; i < 5; i++) {
     // if (i === 4) {
     //   storedScores[i] =score;
@@ -132,9 +157,10 @@ function ask(questionNum) {
         rightWrong("correct");
         score = score + 1;
       } else {
-        console.log("incorrect");
-        rightWrong("wrong")
-        timer = timer - 5;
+        timer = timer - 10;
+        console.log("incorrect " + timer);
+        rightWrong("wrong");
+
       }
       document.removeEventListener("click", _listener);
       ask(questionNum + 1);
@@ -143,7 +169,8 @@ function ask(questionNum) {
   }
   else {
     console.log("finished");
-    gameHeader.textContent = "finished score " + score;
+    timer = ((timer < 1) ? 0 : timer);
+    gameHeader.textContent = "finished score " + timer;
     endPage();
 
   }
@@ -155,112 +182,112 @@ function rightWrong(ans) {
     removeResult.remove();
   }
   var div;
-    div = document.createElement("div")
-    result.appendChild(div);
-    div.innerHTML = '<hr> <p id="answer" >' + ans + '</p>';
-    //result.textContent = ans;
+  div = document.createElement("div")
+  result.appendChild(div);
+  div.innerHTML = '<hr> <p id="answer" >' + ans + '</p>';
+  //result.textContent = ans;
 
   setTimeout(function () {
-      div.remove();
+    div.remove();
   }, 1000);
-  
+
 
 }
 ///////////////
-function askQ() {
-  var i = 0;
-  // for (let i = 0; i < questions.length; i++) {
-  var timer1 = setInterval(function () {
-    var lisuestions = "this is the question";
+// function askQ() {
+//   var i = 0;
+//   // for (let i = 0; i < questions.length; i++) {
+//   var timer1 = setInterval(function () {
+//     var lisuestions = "this is the question";
 
-    console.log(i);
-    questionObj = questions[i];
-    console.log(questionObj.title);
-    gameHeader.textContent = questionObj.title;
-    gameHeader.setAttribute("class", 'card game-question');
+//     console.log(i);
+//     questionObj = questions[i];
+//     console.log(questionObj.title);
+//     gameHeader.textContent = questionObj.title;
+//     gameHeader.setAttribute("class", 'card game-question');
 
-    //todos.forEach(function (todo, idx, todos) {
-    //const li = document.createElement("li");
-    for (let i = 0; i < questionObj.choices.length; i++) {
-      const button = document.createElement("button");
-      button.setAttribute('value', questionObj.choices[i]);
+//     //todos.forEach(function (todo, idx, todos) {
+//     //const li = document.createElement("li");
+//     for (let i = 0; i < questionObj.choices.length; i++) {
+//       const button = document.createElement("button");
+//       button.setAttribute('value', questionObj.choices[i]);
 
-      button.textContent = questionObj.choices[i];
+//       button.textContent = questionObj.choices[i];
 
-      gameHeader.appendChild(button);
-      document.addEventListener("click", function (event) {
-        event.preventDefault();
-        //let pressedButton = 
-        console.log(event.toElement.value);
-        let press = event.toElement.value;
-        console.log(questionObj.answer);
-        if (press.match(questionObj.answer)) {
-          console.log("is correct");
-          score = 1;
-        } else {
-          console.log("incorrect");
-          score = 0;
-        }
+//       gameHeader.appendChild(button);
+//       document.addEventListener("click", function (event) {
+//         event.preventDefault();
+//         //let pressedButton = 
+//         console.log(event.toElement.value);
+//         let press = event.toElement.value;
+//         console.log(questionObj.answer);
+//         if (press.match(questionObj.answer)) {
+//           console.log("is correct");
+//           score = 1;
+//         } else {
+//           console.log("incorrect");
+//           score = 0;
+//         }
 
-      });
+//       });
 
-      //li.appendChild(button);
+//       //li.appendChild(button);
 
-    }
-    if (timer < 3) {
-      clearInterval(timer1);
-    }
-    console.log("timer" + timer);
-    i++;
-  }, 2000);
-}
+//     }
+//     if (timer < 3) {
+//       clearInterval(timer1);
+//     }
+//     console.log("timer" + timer);
+//     i++;
+//   }, 2000);
+// }
 //}
 //////////////////////////////
-function answerResult() {
-  console.log("here");
-}
+// function answerResult() {
+//   console.log("here");
+// }
 
 ///////////////////////////////////////////////////////////////////////////
-function askQuestions(questionObj) {
-  var lisuestions = "this is the question";
-  let score;
-  console.log(questionObj.title);
-  gameHeader.textContent = questionObj.title;
-  gameHeader.setAttribute("class", 'card game-question');
+// function askQuestions(questionObj) {
+//   var lisuestions = "this is the question";
+//   let score;
+//   console.log(questionObj.title);
+//   gameHeader.textContent = questionObj.title;
+//   gameHeader.setAttribute("class", 'card game-question');
 
-  //todos.forEach(function (todo, idx, todos) {
-  //const li = document.createElement("li");
-  for (let i = 0; i < questionObj.choices.length; i++) {
-    const button = document.createElement("button");
-    button.setAttribute('value', questionObj.choices[i]);
+//   //todos.forEach(function (todo, idx, todos) {
+//   //const li = document.createElement("li");
+//   for (let i = 0; i < questionObj.choices.length; i++) {
+//     const button = document.createElement("button");
+//     button.setAttribute('value', questionObj.choices[i]);
 
-    button.textContent = questionObj.choices[i];
+//     button.textContent = questionObj.choices[i];
 
-    gameHeader.appendChild(button);
-    document.addEventListener("click", function (event) {
-      event.preventDefault();
-      //let pressedButton = 
-      console.log(event.toElement.value);
-      let press = event.toElement.value;
-      console.log(questionObj.answer);
-      if (press.match(questionObj.answer)) {
-        console.log("is correct");
-        score = 1;
-      } else {
-        console.log("incorrect");
-        score = 0;
-        timer = timer - 10;
-      }
+//     gameHeader.appendChild(button);
+//     document.addEventListener("click", function (event) {
+//       event.preventDefault();
+//       //let pressedButton = 
+//       console.log(event.toElement.value);
+//       let press = event.toElement.value;
+//       console.log(questionObj.answer);
+//       if (press.match(questionObj.answer)) {
+//         console.log("is correct");
+//         score = 1;
+//       } else {
+//         console.log("incorrect");
+//         score = 0;
+//         timer = timer - 10;
+//       }
 
-    });
+//     });
 
-    //li.appendChild(button);
+//     //li.appendChild(button);
 
-  }
-}
+//   }
+// }
 function countdown() {
 
-  var x = setInterval(function () {
+  clockTime = setInterval(function () {
 
     // Get today's date and time
     timer--;
@@ -269,78 +296,78 @@ function countdown() {
 
 
     // Display the result in the element with id="demo"
-    document.getElementById("countDownTimer").innerHTML = timer + "s ";
+    document.getElementById("countDownTimer").innerHTML = timer;
 
     // If the count down is finished, write some text
     if (timer < 1) {
-      clearInterval(x);
+      clearInterval(clockTime);
       document.getElementById("countDownTimer").innerHTML = "EXPIRED";
       endPage();
     }
   }, 1000);
 }
 
-var todos = ["Learn HTML", "Learn CSS", "Learn JavaScript"];
+// var todos = ["Learn HTML", "Learn CSS", "Learn JavaScript"];
 
 
-renderTodos();
-
-
-
+// renderTodos();
 
 
 
-function renderTodos(event) {
-  //todos.push(event.textContent);
-  // Clear todoList element and update todoCountSpan
-  // todoList.innerHTML = "";
-  // todoCountSpan.textContent = todos.length;
-
-  // Render a new li for each todo
-  // todos.forEach(function (todo, idx, todos) {
-  //   const li = document.createElement("li");
-  //   li.textContent = todo;
-
-  //   todoList.appendChild(li);
-  //   li.setAttribute("data-index", idx);
-  //   li.setAttribute("date-value", todo);
-
-  //   const button = document.createElement("button");
-  //   button.textContent = "complete";
-  //   li.appendChild(button);
 
 
-  // }
-  // );
-  //localStorage.setItem("store", todos);
-}
-function init() {
-  var storeditems = JSON.parse(localStorage.getItem("todos"));
-  // if(storeditems.length && storedTodos){
-  //   todos = storeditems;
-  // }
-}
 
-todoForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-  var todo = todoInput.value.trim();
-  console.log(todo);
-  if (todo === "") {
-    return false;
-  }
-  todos.push(todo);
-  localStorage.setItem("todos", JSON.stringify(todos));
-  renderTodos();
-}
-);
-todoList.addEventListener("click", function (event) {
-  var el = event.target;
-  if (el.matches("button")) {
-    var idx = el.parentElement.getAttribute("data-index");
-    todos.splice(idx, 1);
-    localStorage.setItem("todos", JSON.stringify(["todas", "tadas"]));
-    renderTodos();
-  }
-});
+// function renderTodos(event) {
+//   //todos.push(event.textContent);
+//   // Clear todoList element and update todoCountSpan
+//   // todoList.innerHTML = "";
+//   // todoCountSpan.textContent = todos.length;
 
-init();
+//   // Render a new li for each todo
+//   // todos.forEach(function (todo, idx, todos) {
+//   //   const li = document.createElement("li");
+//   //   li.textContent = todo;
+
+//   //   todoList.appendChild(li);
+//   //   li.setAttribute("data-index", idx);
+//   //   li.setAttribute("date-value", todo);
+
+//   //   const button = document.createElement("button");
+//   //   button.textContent = "complete";
+//   //   li.appendChild(button);
+
+
+//   // }
+//   // );
+//   //localStorage.setItem("store", todos);
+// }
+// function init() {
+//   var storeditems = JSON.parse(localStorage.getItem("todos"));
+//   // if(storeditems.length && storedTodos){
+//   //   todos = storeditems;
+//   // }
+// }
+
+// todoForm.addEventListener("submit", function (event) {
+//   event.preventDefault();
+//   var todo = todoInput.value.trim();
+//   console.log(todo);
+//   if (todo === "") {
+//     return false;
+//   }
+//   todos.push(todo);
+//   localStorage.setItem("todos", JSON.stringify(todos));
+//   renderTodos();
+// }
+// );
+// todoList.addEventListener("click", function (event) {
+//   var el = event.target;
+//   if (el.matches("button")) {
+//     var idx = el.parentElement.getAttribute("data-index");
+//     todos.splice(idx, 1);
+//     localStorage.setItem("todos", JSON.stringify(["todas", "tadas"]));
+//     renderTodos();
+//   }
+// });
+
+// init();
