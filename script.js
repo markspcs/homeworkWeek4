@@ -27,7 +27,13 @@ var questions = [
   },
   ///etc.
 ];
-var topScores = [0, 0, 0, 0, 0]
+//var topScores = [0, 0, 0, 0, 0]
+var topScores = {
+  empty1: 45,
+  empty2: 32,
+  empty3: 99,
+  empty4: 2
+}
 
 questionNum = 0;
 
@@ -101,16 +107,14 @@ function setScores(event) {
   var userInitials = document.getElementById("newScore").value;
   console.log("score " + timer);
   console.log("event "   + userInitials);
+  topScores[userInitials] = timer;
   for (let i = 0; i < 5; i++) {
-    // if (i === 4) {
-    //   storedScores[i] =score;
-    //   console.log("default score");
-    // }
-    // else 
     if (score > storedScores[i]) {
       storedScores.push(score);
       break;
       //storedScores[i] = score;
+      
+      
     }
     else {
       storedScores.push(score);
@@ -118,6 +122,13 @@ function setScores(event) {
       break;
     }
   }
+  console.log(topScores);
+    keysSorted = Object.keys(topScores).sort(function(a,b){return topScores[b]-topScores[a]})
+    console.log(keysSorted);  
+    var sortedScore = {};
+    keysSorted.forEach(function(y){
+      console.log(y);
+    });
   let sortScores = storedScores.sort(function (a, b) { return a - b });
   sortScores.shift();
   localStorage.setItem("topScores", JSON.stringify(sortScores));
