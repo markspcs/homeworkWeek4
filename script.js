@@ -94,44 +94,52 @@ function endPage() {
   //scoreForm.submit();
   scoreButton.addEventListener('click', function (x) {
     x.preventDefault();
-  setScores(x)
+    setScores(x)
   });
   // setScores(timer);
 }
 ////////////////////////////
 function setScores(event) {
   var storedScores = JSON.parse(localStorage.getItem("topScores"));
-  if (storedScores == null) { // initializes if never played and keeps to 5 scores
-    storedScores = [0, 0, 0, 0, 0]
+  var sortedScores = {
   }
+  // if (storedScores == null) { // initializes if never played and keeps to 5 scores
+  //   storedScores = [0, 0, 0, 0, 0]
+  // }
   var userInitials = document.getElementById("newScore").value;
   console.log("score " + timer);
-  console.log("event "   + userInitials);
+  console.log("event " + userInitials);
   topScores[userInitials] = timer;
-  for (let i = 0; i < 5; i++) {
-    if (score > storedScores[i]) {
-      storedScores.push(score);
-      break;
-      //storedScores[i] = score;
-      
-      
-    }
-    else {
-      storedScores.push(score);
-      console.log("High Score " + i);
-      break;
-    }
-  }
+  // for (let i = 0; i < 5; i++) {
+  //   if (score > storedScores[i]) {
+  //     storedScores.push(score);
+  //     break;
+  //     //storedScores[i] = score;
+
+
+  //   }
+  //   else {
+  //     storedScores.push(score);
+  //     console.log("High Score " + i);
+  //     break;
+  //   }
+  // }
   console.log(topScores);
-    keysSorted = Object.keys(topScores).sort(function(a,b){return topScores[b]-topScores[a]})
-    console.log(keysSorted);  
-    var sortedScore = {};
-    keysSorted.forEach(function(y){
-      console.log(y);
-    });
-  let sortScores = storedScores.sort(function (a, b) { return a - b });
-  sortScores.shift();
-  localStorage.setItem("topScores", JSON.stringify(sortScores));
+  keysSorted = Object.keys(topScores).sort(function (a, b) { return topScores[b] - topScores[a] })
+    
+  console.log("below is the variable keysSorted")
+  console.log(keysSorted);
+  keysSorted.forEach(function (y) {
+    sortedScores[ y ] = topScores.y;
+    topScores.y
+    
+    console.log(topScores.y);
+  });
+  //let sortScores = storedScores.sort(function (a, b) { return a - b });
+  //sortScores.shift();
+  
+  console.log(sortedScores);
+  localStorage.setItem("topScores", JSON.stringify(sortedScores));
 }
 //////////////////////////////
 function ask(questionNum) {
