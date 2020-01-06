@@ -5,32 +5,11 @@ var todoCountSpan = document.querySelector("#todo-count");
 var gameBody = document.querySelector("#game-body");
 var gameHeader = document.querySelector("#game-header");
 var result = document.querySelector("#result");
-//var countdownTimer = document.querySelector("#countDownTimer");
+var highScoreSpan = document.querySelector("#highScore");
 var timer = 30;
 var clockTime;
 var score = 0;
-// var questions = [
-//   {
-//     title: "Commonly used data types DO NOT include:",
-//     choices: ["strings", "booleans", "alerts", "numbers"],
-//     answer: "alerts"
-//   },
-//   {
-//     title: "The condition in an if / else statement is enclosed within ____.",
-//     choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
-//     answer: "parentheses"
-//   },
-//   {
-//     title: "The question ____.",
-//     choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
-//     answer: "parentheses"
-//   },
-//   ///etc.
-// ];
-//var topScores = [0, 0, 0, 0, 0]
-
-
-questionNum = 0;
+//questionNum = 0;
 
 startPage();
 
@@ -39,6 +18,15 @@ function startPage() {
   console.log("this is start");
   gameHeader.textContent = "start game";
   gameHeader.setAttribute("class", 'card game-question');
+  const highScoreButton = document.createElement("button");
+  highScoreButton.className = "highScore";
+  highScoreButton.textContent = "Highscores";
+  highScoreSpan.appendChild(highScoreButton);
+  // document.addEventListener("click", function (e) {
+  //   e.preventDefault();
+  //   highScores();
+  // });
+  
   const button = document.createElement("button");
   button.setAttribute('value', "start");
 
@@ -105,20 +93,7 @@ function setScores(event) {
   console.log("score " + timer);
   console.log("event " + userInitials);
   topScores[userInitials] = timer;
-  // for (let i = 0; i < 5; i++) {
-  //   if (score > storedScores[i]) {
-  //     storedScores.push(score);
-  //     break;
-  //     //storedScores[i] = score;
 
-
-  //   }
-  //   else {
-  //     storedScores.push(score);
-  //     console.log("High Score " + i);
-  //     break;
-  //   }
-  // }
   console.log(topScores);
   // keysSorted = Object.keys(topScores).sort(function (a, b) { return topScores[b] - topScores[a] })
 
@@ -155,16 +130,6 @@ function highScores() {
     gameHeader.appendChild(scoreDiv);
     // console.log(topScores.y);
   });
-  // const scoreForm = document.createElement("FORM");
-  // gameHeader.appendChild(scoreForm);
-  // const nameLabel = document.createElement('label');
-  // nameLabel.innerHTML = "Enter Initials : ";
-  // scoreForm.appendChild(nameLabel);
-  // const scoreText = document.createElement('input');
-  // scoreText.type = 'text';
-  // scoreText.id = 'newScore';
-  // //scoreText.value = timer;
-  // scoreForm.appendChild(scoreText);
   const goBack = document.createElement("button");
   const clearScoreButton = document.createElement("button");
   //scoreButton.setAttribute('value', timer);
@@ -173,7 +138,7 @@ function highScores() {
   gameHeader.appendChild(goBack);
   gameHeader.appendChild(clearScoreButton);
   //scoreForm.submit();
-  goBack.addEventListener('click', function () { });
+  //goBack.addEventListener('click', function () { location.reload(true) });
   clearScoreButton.addEventListener('click', function (x) {
     x.preventDefault();
     emptyScores = {};
