@@ -9,31 +9,26 @@ var result = document.querySelector("#result");
 var timer = 30;
 var clockTime;
 var score = 0;
-var questions = [
-  {
-    title: "Commonly used data types DO NOT include:",
-    choices: ["strings", "booleans", "alerts", "numbers"],
-    answer: "alerts"
-  },
-  {
-    title: "The condition in an if / else statement is enclosed within ____.",
-    choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
-    answer: "parentheses"
-  },
-  {
-    title: "The question ____.",
-    choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
-    answer: "parentheses"
-  },
-  ///etc.
-];
+// var questions = [
+//   {
+//     title: "Commonly used data types DO NOT include:",
+//     choices: ["strings", "booleans", "alerts", "numbers"],
+//     answer: "alerts"
+//   },
+//   {
+//     title: "The condition in an if / else statement is enclosed within ____.",
+//     choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
+//     answer: "parentheses"
+//   },
+//   {
+//     title: "The question ____.",
+//     choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
+//     answer: "parentheses"
+//   },
+//   ///etc.
+// ];
 //var topScores = [0, 0, 0, 0, 0]
-var topScores = {
-  empty1: 45,
-  empty2: 32,
-  empty3: 99,
-  empty4: 2
-}
+
 
 questionNum = 0;
 
@@ -100,12 +95,12 @@ function endPage() {
 }
 ////////////////////////////
 function setScores(event) {
-  var storedScores = JSON.parse(localStorage.getItem("topScores"));
-  var sortedScores = {
-  }
-  // if (storedScores == null) { // initializes if never played and keeps to 5 scores
-  //   storedScores = [0, 0, 0, 0, 0]
+  var topScores = JSON.parse(localStorage.getItem("topScores"));
+  // var sortedScores = {
   // }
+  if (topScores == null) { // initializes if never played and keeps to 5 scores
+    topScores = {};
+  }
   var userInitials = document.getElementById("newScore").value;
   console.log("score " + timer);
   console.log("event " + userInitials);
@@ -125,21 +120,66 @@ function setScores(event) {
   //   }
   // }
   console.log(topScores);
-  keysSorted = Object.keys(topScores).sort(function (a, b) { return topScores[b] - topScores[a] })
-    
-  console.log("below is the variable keysSorted")
-  console.log(keysSorted);
-  keysSorted.forEach(function (y) {
-    sortedScores[ y ] = topScores.y;
-    topScores.y
-    
-    console.log(topScores.y);
-  });
+  // keysSorted = Object.keys(topScores).sort(function (a, b) { return topScores[b] - topScores[a] })
+
+  // console.log("below is the variable keysSorted")
+  // console.log(keysSorted);
+  // keysSorted.forEach(function (y) {
+  //   sortedScores[ y ] = topScores.y;
+  //   topScores.y
+
+  //   console.log(topScores.y);
+  // });
   //let sortScores = storedScores.sort(function (a, b) { return a - b });
   //sortScores.shift();
-  
-  console.log(sortedScores);
-  localStorage.setItem("topScores", JSON.stringify(sortedScores));
+
+  //console.log(sortedScores);
+  localStorage.setItem("topScores", JSON.stringify(topScores));
+  highScores();
+}
+///////////////////////////////
+function highScores() {
+  console.log("this is the highScores");
+  //clearInterval(clockTime);
+  //document.getElementById("countDownTimer").innerHTML = timer;
+  gameHeader.innerHTML = '<h2>Highscores</h2>';
+  let topScores = JSON.parse(localStorage.getItem("topScores"));
+  console.log(topScores);
+  Object.keys(topScores).forEach(function (y) {
+    console.log(y + " " + topScores[y]);
+    // sortedScores[ y ] = topScores.y;
+    // topScores.y
+    let scoreDiv = document.createElement("div");
+    scoreDiv.className = 'highScore';
+    scoreDiv.textContent = y + " - " + topScores[y];
+    gameHeader.appendChild(scoreDiv);
+    // console.log(topScores.y);
+  });
+  // const scoreForm = document.createElement("FORM");
+  // gameHeader.appendChild(scoreForm);
+  // const nameLabel = document.createElement('label');
+  // nameLabel.innerHTML = "Enter Initials : ";
+  // scoreForm.appendChild(nameLabel);
+  // const scoreText = document.createElement('input');
+  // scoreText.type = 'text';
+  // scoreText.id = 'newScore';
+  // //scoreText.value = timer;
+  // scoreForm.appendChild(scoreText);
+  const goBack = document.createElement("button");
+  const clearScoreButton = document.createElement("button");
+  //scoreButton.setAttribute('value', timer);
+  goBack.textContent = "go back";
+  clearScoreButton.textContent = "clear Highscores";
+  gameHeader.appendChild(goBack);
+  gameHeader.appendChild(clearScoreButton);
+  //scoreForm.submit();
+  goBack.addEventListener('click', function () { });
+  clearScoreButton.addEventListener('click', function (x) {
+    x.preventDefault();
+    emptyScores = {};
+    localStorage.setItem("topScores", JSON.stringify(emptyScores));
+    //setScores(x)
+  });
 }
 //////////////////////////////
 function ask(questionNum) {
